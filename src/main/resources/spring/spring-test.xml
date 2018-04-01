@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+
+        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/elasticsearch http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd">
+
+    <context:property-placeholder location="classpath:*.properties"/><!-- 加载配置文件 -->
+    <!--spring整合elasticsearch-->
+    <!-- Spring data 自动扫描repository接口，生成实现类 -->
+    <!--<elasticsearch:repositories base-package="com.huangqq.storage.dao" />-->
+
+    <!-- ip:port换成具体的ip和端口，多个以逗号分隔 -->
+    <elasticsearch:transport-client id="client" cluster-nodes="${elasticsearch.ip}:${elasticsearch.port}" cluster-name="elasticsearch" client-transport-sniff="false"/>
+
+    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg ref="client"/>
+    </bean>
+</beans>
